@@ -15,20 +15,44 @@ class CreateArticulosTable extends Migration
                 'unsigned'       => true,
                 'auto_increment' => true
             ],
-            'encabezado' => [
+            'titulo' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 255
             ],
-            'cuerpo' => [
+            'palabras_clave' => [
+                'type'       => 'TEXT',
+                'constraint' => 200,
+                'null'       => true
+            ],
+            'edad_minima' => [
+                'type'       => 'INT',
+                'constraint' => 1,
+                'unsigned'   => true,
+                'null'       => true
+            ],
+            'edad_maxima' => [
+                'type'       => 'INT',
+                'constraint' => 1,
+                'unsigned'   => true,
+                'null'       => true
+            ],
+            'imagen_portada' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 255
+            ],
+            'imagen_previa' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 255
+            ],
+            'sintesis' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 200
+            ],
+            'contenido' => [
                 'type' => 'TEXT'
             ],
-            'imagen' => [
-                'type'       => 'VARCHAR',
-                'constraint' => 255
-            ],
-            'fecha' => [
-                'type' => 'TIMESTAMP'
-            ]
+            'fecha_de_creacion TIMESTAMP DEFAULT NOW()',
+            'fecha_de_modificacion TIMESTAMP DEFAULT NOW() ON UPDATE NOW()'
         ]);
         $this->forge->addPrimaryKey('id');
         $this->forge->createTable('articulos');
