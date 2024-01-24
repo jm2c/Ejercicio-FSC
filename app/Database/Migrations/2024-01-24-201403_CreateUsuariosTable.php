@@ -17,7 +17,8 @@ class CreateUsuariosTable extends Migration
             ],
             'nickname' => [
                 'type'       => 'VARCHAR',
-                'constraint' => 100
+                'constraint' => 100,
+                'unique'     => true
             ],
             'password' => [
                 'type'       => 'VARCHAR',
