@@ -23,7 +23,7 @@ class ArticulosSeeder extends Seeder
                 'edad_minima' => $min,
                 'edad_maxima' => $max,
                 'imagen_portada' => $faker->imageUrl(800, 640),
-                'imagen_previa' => $faker->imageUrl(30,30),
+                'imagen_previa' => $faker->imageUrl(150,150),
                 'sintesis' => $faker->text(200),
                 'contenido' => $faker->text(800)
             ];
