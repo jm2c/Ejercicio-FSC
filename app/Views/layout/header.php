@@ -6,8 +6,8 @@
     <title>Articulos</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="px-3">
-    <nav class="mt-3">
+<body class="px-3 dark:bg-gray-800 dark:text-white">
+    <nav class="mt-3 dark:text-black">
         <ul class="flex justify-end flex-col md:flex-row">
             <li><a href="/"      class="block md:inline-block rounded bg-indigo-100 hover:bg-indigo-300 no-underline px-4 py-2 ml-1">Inicio</a></li>
             <li><a href="/admin" class="block md:inline-block rounded bg-indigo-100 hover:bg-indigo-300 no-underline px-4 py-2 ml-1">Admin</a></li>
