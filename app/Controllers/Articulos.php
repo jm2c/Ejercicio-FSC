@@ -12,6 +12,7 @@ class Articulos extends BaseController
 
     public function __construct()
     {
+        \Config\Services::session();
         $this->articulo = new ArticuloModel();
     }
 
