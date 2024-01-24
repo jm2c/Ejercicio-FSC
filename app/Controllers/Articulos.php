@@ -30,10 +30,23 @@ class Articulos extends BaseController
              . view('layout/footer');
     }
 
+    public function admin()
+    {
+        return view('layout/header')
+             . view('adminView')
+             . view('layout/footer');
+    }
+
+    public function listaArticulos()
+    {
+        $articulos = $this->articulo->select(['id', 'titulo'])->findAll();
+        return json_encode($articulos);
+    }
+
     public function listaArticulosPortada()
     {
         $articulosPortada = $this->articulo->select(['id', 'titulo', 'imagen_previa', 'sintesis'])
-                          ->orderBy('fecha_de_creacion', 'desc')->limit(6)->find();
+                          ->orderBy('fecha_de_creacion', 'desc')->findAll(6);
 
         return json_encode($articulosPortada);
     }
