@@ -1,6 +1,6 @@
 const section = document.getElementById('ultimos')
-const baseUrl = window.location
-const url = baseUrl + 'listaArticulosPortada'
+const baseUrl = window.location.origin
+const url = baseUrl + '/listaArticulosPortada'
 const xhr = new XMLHttpRequest()
 let data
 
@@ -19,7 +19,7 @@ xhr.onload = evt => {
 
             section.classList.add('grid', 'grid-cols-1', 'md:grid-cols-3', 'gap-4')
 
-            anchor.href = baseUrl + 'articulo/' + element.id
+            anchor.href = baseUrl + '/articulo/' + element.id
 
             header.innerText = element.titulo
             header.classList.add('text-2xl', 'font-bold')
