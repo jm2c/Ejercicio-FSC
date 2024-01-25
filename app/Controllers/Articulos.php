@@ -9,10 +9,11 @@ use App\Models\ArticuloModel;
 class Articulos extends BaseController
 {
     private $articulo;
+    private $session;
 
     public function __construct()
     {
-        \Config\Services::session();
+        $this->session = \Config\Services::session();
         $this->articulo = new ArticuloModel();
     }
 
@@ -33,8 +34,35 @@ class Articulos extends BaseController
 
     public function admin()
     {
+        if(!isset($this->session->logged))
+            return redirect('loginForm');
+
         return view('layout/header')
              . view('adminView')
+             . view('layout/footer');
+    }
+
+    public function editarArticulo($segmento = '') {
+        if(!isset($this->session->logged))
+            return redirect('loginForm');
+
+        helper('form');
+        $articulo = $this->articulo->find($segmento);
+        $data = [];
+
+        if(!is_null($articulo))
+        {
+            // El articulo existe y se va a actualizar
+            $data = $articulo;
+            $data['nuevo'] = false;
+        }
+        else
+        {
+            // El articulo es nuevo
+            $data['nuevo'] = true;
+        }
+        return view('layout/header', $data)
+             . view('editarArticuloForm')
              . view('layout/footer');
     }
 
@@ -50,5 +78,25 @@ class Articulos extends BaseController
                           ->orderBy('fecha_de_creacion', 'desc')->findAll(6);
 
         return json_encode($articulosPortada);
+    }
+
+    public function nuevoArticulo($json) {
+        $request = \Config\Services::request();
+        $post = $request->getPost();
+        $nuevo = [
+            'titulo'         => $post['titulo'],
+            'palabras_clave' => $post['palabrasClave'],
+            'edad_minima'    => $post['edadMinima'],
+            'edad_maxima'    => $post['edadMaxima'],
+            'imagen_portada' => 'https://picsum.photos/800/100',
+            'imagen_previa'  => 'https://picsum.photos/150',
+            'sintesis'       => $post['sintesis'],
+            'contenido'      => $post['contenido']
+        ];
+        $this->articulo->table('articulos')->insert($nuevo);
+    }
+
+    public function actualizarArticulo($json) {
+
     }
 }
