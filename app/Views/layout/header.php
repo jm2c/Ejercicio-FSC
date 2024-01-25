@@ -1,7 +1,6 @@
 <?php
 $logged = isset($_SESSION['logged']) && $_SESSION['logged'];
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,6 +8,7 @@ $logged = isset($_SESSION['logged']) && $_SESSION['logged'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Articulos</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body class="px-3 dark:bg-gray-800 dark:text-white">
     <nav class="mt-3 dark:text-black">
