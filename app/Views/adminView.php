@@ -26,7 +26,7 @@ xhr.onload = evt => {
                 articleCell.classList.add('p-4', 'border-b', 'border-blue-gray-50')
                 editCell.classList.add(   'p-4', 'border-b', 'border-blue-gray-50')
                 deleteCell.classList.add( 'p-4', 'border-b', 'border-blue-gray-50')
-                editLink.classList.add('rounded', 'p-3', 'bg-green-200', 'hover:bg-green-500')
+                editLink.classList.add('rounded', 'p-3', 'text-black', 'bg-green-200', 'hover:bg-green-500')
                 deleteLink.classList.add('rounded', 'p-3', 'text-white', 'bg-red-500', 'hover:bg-red-900')
 
                 articleLink.href = baseUrl + '/articulo/'        + element.id
