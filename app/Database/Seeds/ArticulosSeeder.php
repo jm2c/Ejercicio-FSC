@@ -24,8 +24,8 @@ class ArticulosSeeder extends Seeder
                 'edad_maxima' => $max,
                 'imagen_portada' => $faker->imageUrl(800, 100),
                 'imagen_previa' => $faker->imageUrl(150,150),
-                'sintesis' => $faker->text(200),
-                'contenido' => $faker->text(800)
+                'sintesis' => $faker->text(80),
+                'contenido' => $faker->text(900)
             ];
         }
 
