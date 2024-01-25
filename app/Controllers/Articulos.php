@@ -106,4 +106,13 @@ class Articulos extends BaseController
     public function actualizarArticulo($json) {
 
     }
+
+    public function borrarArticulo($id)
+    {
+        if(!$this->isLogged())
+            return "Not allowed";
+
+        $this->articulo->delete($id);
+        return redirect('dashboard');
+    }
 }
