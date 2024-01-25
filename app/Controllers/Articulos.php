@@ -17,6 +17,10 @@ class Articulos extends BaseController
         $this->articulo = new ArticuloModel();
     }
 
+    private function isLogged() {
+        return isset($this->session->logged);
+    }
+
     public function index()
     {
         return view('layout/header')
@@ -34,7 +38,7 @@ class Articulos extends BaseController
 
     public function admin()
     {
-        if(!isset($this->session->logged))
+        if(!$this->isLogged())
             return redirect('loginForm');
 
         return view('layout/header')
@@ -43,7 +47,7 @@ class Articulos extends BaseController
     }
 
     public function editarArticulo($segmento = '') {
-        if(!isset($this->session->logged))
+        if(!$this->isLogged())
             return redirect('loginForm');
 
         helper('form');
@@ -81,6 +85,9 @@ class Articulos extends BaseController
     }
 
     public function nuevoArticulo($json) {
+        if(!$this->isLogged())
+            return redirect('loginForm');
+
         $request = \Config\Services::request();
         $post = $request->getPost();
         $nuevo = [
