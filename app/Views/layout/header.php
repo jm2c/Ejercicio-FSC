@@ -23,4 +23,4 @@ $logged = isset($_SESSION['logged']) && $_SESSION['logged'];
             <li><a href="/juego" class="block md:inline-block rounded bg-indigo-100 hover:bg-indigo-300 no-underline px-4 py-2 ml-1">Juego</a></li>
         </ul>
     </nav>
-    <main class="mt-2">
+    <main class="mt-2 mb-8">
