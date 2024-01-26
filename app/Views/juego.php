@@ -39,6 +39,8 @@
         let images = {}
         let goalsArray = []
         let goalsImagesArray = []
+        let startTime = 0
+        let timeLeft = 16
 
         let isDragging = false
         const imgUrls = [
@@ -241,6 +243,8 @@
 
             }
 
+            startTime = Date.now() + timeLeft * 1000
+
             draw()
             update()
         }
@@ -266,6 +270,15 @@
             ctx.stroke()
             ctx.fill()
 
+            // Draw the clock
+            let dt = startTime - Date.now()
+            let segs = Math.floor(dt / 1000)
+            let decs = Math.floor(dt / 100) % 10
+            ctx.font = "bold 30px Sans"
+            ctx.fillStyle = "white"
+            ctx.textAlign = "center"
+            ctx.fillText(`${segs}.${decs}`, WIDTH / 2, 40)
+
             // Draw goal figures
             ctx.drawImage(goalsImagesArray[0], LEFT,  TOP, SCALE, SCALE)
             ctx.drawImage(goalsImagesArray[1], LEFT,  BOTTOM, SCALE, SCALE)
@@ -280,6 +293,8 @@
         }
 
         function update() {
+            if(startTime < Date.now()) return
+
             ctx.clearRect(0,0,WIDTH,HEIGHT)
             draw()
             requestAnimationFrame(update)
