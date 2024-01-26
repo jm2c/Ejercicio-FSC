@@ -152,22 +152,34 @@
 
                 // Check for the upper left corner
                 if((fig.x + SCALE)**2 + (fig.y + SCALE)**2 < RAD**2) {
-                    fig.image = imagesArray[fig.imageIndex + 8]
-                }
-
-                // Check for the upper right corner
-                if((fig.x - WIDTH)**2 + (fig.y + SCALE)**2 < RAD**2) {
-                    fig.image = imagesArray[fig.imageIndex + 8]
+                    if( fig.type == goalsArray[0] )
+                        fig.image = imagesArray[fig.imageIndex + 4]
+                    else
+                        fig.image = imagesArray[fig.imageIndex + 8]
                 }
 
                 // Check for the down left corner
                 if((fig.x + SCALE)**2 + (fig.y - HEIGHT)**2 < RAD**2) {
-                    fig.image = imagesArray[fig.imageIndex + 8]
+                    if( fig.type == goalsArray[1] )
+                        fig.image = imagesArray[fig.imageIndex + 4]
+                    else
+                        fig.image = imagesArray[fig.imageIndex + 8]
+                }
+
+                // Check for the upper right corner
+                if((fig.x - WIDTH)**2 + (fig.y + SCALE)**2 < RAD**2) {
+                    if( fig.type == goalsArray[2] )
+                        fig.image = imagesArray[fig.imageIndex + 4]
+                    else
+                        fig.image = imagesArray[fig.imageIndex + 8]
                 }
 
                 // Check for the down right corner
                 if((fig.x - WIDTH)**2 + (fig.y - HEIGHT)**2 < RAD**2) {
-                    fig.image = imagesArray[fig.imageIndex + 8]
+                    if( fig.type == goalsArray[3] )
+                        fig.image = imagesArray[fig.imageIndex + 4]
+                    else
+                        fig.image = imagesArray[fig.imageIndex + 8]
                 }
             })
             isDragging = false
