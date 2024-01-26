@@ -14,6 +14,7 @@ let startTime = 0
 let timeLeft = 16
 let score = 0
 let gameStarted = false
+let instructions = []
 
 let isDragging = false
 const imgUrls = [
@@ -29,7 +30,8 @@ const imgUrls = [
     "/assets/failUp.png",
     "/assets/failDown.png",
     "/assets/failLeft.png",
-    "/assets/failRight.png"
+    "/assets/failRight.png",
+    "/assets/next.png"
     ]
 let figures = []
 let figuresOut = [] // non playable figures
@@ -102,6 +104,16 @@ canvas.onpointerdown = evt => {
     evt.preventDefault()
     let x = evt.clientX
     let y = evt.clientY
+
+    if(!gameStarted) {
+        if(x > WIDTH - 2*SCALE && y > HEIGHT - 2*SCALE) {
+            gameStarted = true
+            startTime = Date.now() + timeLeft * 1000
+            update()
+        }
+        return
+    }
+
     figures.forEach(fig => {
         let t = !isDragging && fig.isTouching(x, y)
         if(t) {
@@ -213,6 +225,14 @@ async function init(numObjs = 1) {
         FRIGHT : imagesArray[11]
     }
 
+    instructions = [
+        "Cada esquina está marcada por una pieza",
+        "Arrastra las piezas a la esquina correcta",
+        "Ciudado, si te equivocas pierdes puntos",
+        "Se rápido, que el timpo corre",
+        "¿Estas listo?"
+    ]
+
     goalsArray = shuffleArray(['UP', 'LEFT', 'RIGHT', 'DOWN'])
     // goalsImagesArray = [images.GUP, images.GLEFT, images.GRIGHT, images.GDOWN]
     goalsImagesArray = goalsArray.map(goal => {
@@ -250,13 +270,34 @@ async function init(numObjs = 1) {
 
     }
 
-    startTime = Date.now() + timeLeft * 1000
-
     draw()
     update()
 }
 
 function draw() {
+    ctx.clearRect(0,0,WIDTH,HEIGHT)
+
+    // Initial screen
+    if(!gameStarted) {
+        ctx.strokeStyle = "#55FF55"
+        ctx.fillStyle = "#006600"
+        ctx.beginPath()
+        ctx.arc(0,0, RAD*(1-FAIL_RATIO), 0, 2*Math.PI)
+        ctx.stroke()
+        ctx.fill()
+        ctx.drawImage(imagesArray[4], LEFT,  TOP, SCALE, SCALE)
+        ctx.drawImage(imagesArray[12], RIGHT - SCALE, BOTTOM - SCALE, SCALE * 2, SCALE * 2)
+        ctx.fillStyle = "white"
+        ctx.font = "bold 25px Sans"
+        ctx.textAlign = "center"
+
+        ctx.fillText(instructions[0], WIDTH/2, HEIGHT/2 - 70)
+        ctx.fillText(instructions[1], WIDTH/2, HEIGHT/2 - 35)
+        ctx.fillText(instructions[2], WIDTH/2, HEIGHT/2)
+        ctx.fillText(instructions[3], WIDTH/2, HEIGHT/2 + 35)
+        ctx.fillText(instructions[4], WIDTH/2, HEIGHT/2 + 70)
+        return
+    }
 
     // Draw the arcs
     ctx.strokeStyle = "#55FF55"
@@ -308,7 +349,6 @@ function draw() {
 function update() {
     if(startTime < Date.now()) return
 
-    ctx.clearRect(0,0,WIDTH,HEIGHT)
     draw()
     requestAnimationFrame(update)
 }
