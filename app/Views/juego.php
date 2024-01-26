@@ -41,6 +41,7 @@
         let goalsImagesArray = []
         let startTime = 0
         let timeLeft = 16
+        let score = 0
 
         let isDragging = false
         const imgUrls = [
@@ -59,6 +60,7 @@
             "/assets/failRight.png"
             ]
         let figures = []
+        let figuresOut = [] // non playable figures
 
         class Triangle {
             constructor(x,y) {
@@ -148,40 +150,73 @@
 
         canvas.onpointerup = evt => {
             evt.preventDefault()
-            figures.forEach(fig => {
+            let lastFigure
+            figures.forEach((fig, index) => {
                 fig.touching = false
                 fig.image = imagesArray[fig.imageIndex]
 
                 // Check for the upper left corner
                 if((fig.x + SCALE)**2 + (fig.y + SCALE)**2 < RAD**2) {
                     if( fig.type == goalsArray[0] )
+                    {
                         fig.image = imagesArray[fig.imageIndex + 4]
+                        score += 5
+                    }
                     else
+                    {
                         fig.image = imagesArray[fig.imageIndex + 8]
+                        score -= 5
+                    }
+                    figuresOut.push(fig)
+                    figures.splice(index, 1)
                 }
 
                 // Check for the down left corner
                 if((fig.x + SCALE)**2 + (fig.y - HEIGHT)**2 < RAD**2) {
                     if( fig.type == goalsArray[1] )
+                    {
                         fig.image = imagesArray[fig.imageIndex + 4]
+                        score += 5
+                    }
                     else
+                    {
                         fig.image = imagesArray[fig.imageIndex + 8]
+                        score -= 5
+                    }
+                    figuresOut.push(fig)
+                    figures.splice(index, 1)
                 }
 
                 // Check for the upper right corner
                 if((fig.x - WIDTH)**2 + (fig.y + SCALE)**2 < RAD**2) {
                     if( fig.type == goalsArray[2] )
+                    {
                         fig.image = imagesArray[fig.imageIndex + 4]
+                        score += 5
+                    }
                     else
+                    {
                         fig.image = imagesArray[fig.imageIndex + 8]
+                        score -= 5
+                    }
+                    figuresOut.push(fig)
+                    figures.splice(index, 1)
                 }
 
                 // Check for the down right corner
                 if((fig.x - WIDTH)**2 + (fig.y - HEIGHT)**2 < RAD**2) {
                     if( fig.type == goalsArray[3] )
+                    {
                         fig.image = imagesArray[fig.imageIndex + 4]
+                        score += 5
+                    }
                     else
+                    {
                         fig.image = imagesArray[fig.imageIndex + 8]
+                        score -= 5
+                    }
+                    figuresOut.push(fig)
+                    figures.splice(index, 1)
                 }
             })
             isDragging = false
@@ -277,7 +312,11 @@
             ctx.font = "bold 30px Sans"
             ctx.fillStyle = "white"
             ctx.textAlign = "center"
-            ctx.fillText(`${segs}.${decs}`, WIDTH / 2, 40)
+            ctx.fillText(`${segs}.${decs}`, WIDTH / 3, 40)
+
+            // Draw score
+            ctx.textAlign = "center"
+            ctx.fillText(score, 2*(WIDTH / 3), 40)
 
             // Draw goal figures
             ctx.drawImage(goalsImagesArray[0], LEFT,  TOP, SCALE, SCALE)
@@ -289,6 +328,7 @@
             for(let i = figures.length - 1; i >= 0; i--){
                 figures[i].draw()
             }
+            figuresOut.forEach(fig => fig.draw())
 
         }
 
