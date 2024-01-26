@@ -12,6 +12,7 @@ $routes->get('/admin', [Articulos::class, 'admin'], ['as' => 'dashboard']);
 $routes->get('/articulo/editar/(:segment)', [Articulos::class, 'editarArticulo']);
 $routes->get('/articulo/(:segment)', [Articulos::class, 'verArticulo']);
 $routes->get('/articulo/borrar/(:segment)', [Articulos::class, 'borrarArticulo']);
+$routes->get('/juego', 'JuegoController');
 
 $routes->get('/listaArticulos', [Articulos::class, 'listaArticulos']);
 $routes->get('/listaArticulosPortada', [Articulos::class, 'listaArticulosPortada']);
