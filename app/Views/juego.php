@@ -162,9 +162,27 @@
             }
             goalsImagesArray = shuffleArray([images.GUP, images.GDOWN, images.GLEFT, images.GRIGHT])
 
-            for(let i = 0; i < 2; i++){
-                const fig = new LeftTriangle(i * SCALE + 40, i * SCALE + 40)
-                figures.push(fig)
+            const dirs = ['UP', 'LEFT', 'RIGHT', 'DOWN']
+            for(let i = 0; i < 4; i++){
+                const dir = dirs[Math.floor(Math.random() * 4)]
+                const posX = (Math.random() * (WIDTH - 5*SCALE)) + 2*SCALE
+                const posY = (Math.random() * (HEIGHT - 5*SCALE)) + 2*SCALE
+                let fig
+                switch (dir) {
+                    case 'UP':
+                        figures.push(new UpTriangle(posX, posY))
+                        break;
+                    case 'LEFT':
+                        figures.push(new LeftTriangle(posX, posY))
+                        break;
+                    case 'RIGHT':
+                        figures.push(new RightTriangle(posX, posY))
+                        break;
+                    case 'DOWN':
+                        figures.push(new DownTriangle(posX, posY))
+                        break;
+                }
+
             }
 
             draw()
@@ -198,11 +216,11 @@
             ctx.drawImage(goalsImagesArray[2], RIGHT, TOP, SCALE, SCALE)
             ctx.drawImage(goalsImagesArray[3], RIGHT, BOTTOM, SCALE, SCALE)
 
+            // Draw they in reverse order allows to pick the upper figure
+            for(let i = figures.length - 1; i >= 0; i--){
+                figures[i].draw()
+            }
 
-
-            figures.forEach(fig => {
-                fig.draw()
-            })
         }
 
         function update() {
