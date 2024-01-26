@@ -1,0 +1,9 @@
+#articulo-principal ul {
+    list-style-type: disc !important;
+    margin-left: 2rem !important;
+}
+
+#articulo-principal ol {
+    list-style-type: decimal !important;
+    margin-left: 2rem !important;
+}
