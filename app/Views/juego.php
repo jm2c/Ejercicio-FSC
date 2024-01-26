@@ -17,7 +17,7 @@
         #juego-canvas {
             margin: 0 auto;
             background-color: #222;
-            cursor: pointer
+            cursor: crosshair
         }
     </style>
     <title>Juego</title>
@@ -29,12 +29,15 @@
     <script>
         const WIDTH  = window.innerWidth
         const HEIGHT = window.innerHeight
-        const SCALE = WIDTH/15
+        const SCALE = WIDTH/20
+        const RAD = 4 * SCALE
+        const FAIL_RATIO = 0.1
         const [LEFT, TOP, BOTTOM, RIGHT] = [0, 0, HEIGHT-SCALE, WIDTH-SCALE]
         const canvas = document.getElementById('juego-canvas')
         const ctx    = canvas.getContext("2d")
         let imagesArray = []
         let images = {}
+        let goalsArray = []
         let goalsImagesArray = []
 
         let isDragging = false
@@ -47,7 +50,11 @@
             "/assets/goalUp.png",
             "/assets/goalDown.png",
             "/assets/goalLeft.png",
-            "/assets/goalRight.png"
+            "/assets/goalRight.png",
+            "/assets/failUp.png",
+            "/assets/failDown.png",
+            "/assets/failLeft.png",
+            "/assets/failRight.png"
             ]
         let figures = []
 
@@ -142,11 +149,31 @@
             figures.forEach(fig => {
                 fig.touching = false
                 fig.image = imagesArray[fig.imageIndex]
+
+                // Check for the upper left corner
+                if((fig.x + SCALE)**2 + (fig.y + SCALE)**2 < RAD**2) {
+                    fig.image = imagesArray[fig.imageIndex + 8]
+                }
+
+                // Check for the upper right corner
+                if((fig.x - WIDTH)**2 + (fig.y + SCALE)**2 < RAD**2) {
+                    fig.image = imagesArray[fig.imageIndex + 8]
+                }
+
+                // Check for the down left corner
+                if((fig.x + SCALE)**2 + (fig.y - HEIGHT)**2 < RAD**2) {
+                    fig.image = imagesArray[fig.imageIndex + 8]
+                }
+
+                // Check for the down right corner
+                if((fig.x - WIDTH)**2 + (fig.y - HEIGHT)**2 < RAD**2) {
+                    fig.image = imagesArray[fig.imageIndex + 8]
+                }
             })
             isDragging = false
         }
 
-        async function init() {
+        async function init(numObjs = 1) {
             canvas.width = WIDTH
             canvas.height = HEIGHT
             imagesArray = await preloadImages(imgUrls)
@@ -158,15 +185,32 @@
                 GUP    : imagesArray[4],
                 GDOWN  : imagesArray[5],
                 GLEFT  : imagesArray[6],
-                GRIGHT : imagesArray[7]
+                GRIGHT : imagesArray[7],
+                FUP    : imagesArray[8],
+                FDOWN  : imagesArray[9],
+                FLEFT  : imagesArray[10],
+                FRIGHT : imagesArray[11]
             }
-            goalsImagesArray = shuffleArray([images.GUP, images.GDOWN, images.GLEFT, images.GRIGHT])
 
-            const dirs = ['UP', 'LEFT', 'RIGHT', 'DOWN']
-            for(let i = 0; i < 4; i++){
-                const dir = dirs[Math.floor(Math.random() * 4)]
-                const posX = (Math.random() * (WIDTH - 5*SCALE)) + 2*SCALE
-                const posY = (Math.random() * (HEIGHT - 5*SCALE)) + 2*SCALE
+            goalsArray = shuffleArray(['UP', 'LEFT', 'RIGHT', 'DOWN'])
+            // goalsImagesArray = [images.GUP, images.GLEFT, images.GRIGHT, images.GDOWN]
+            goalsImagesArray = goalsArray.map(goal => {
+                switch (goal) {
+                    case 'UP':
+                        return images.GUP
+                    case 'DOWN':
+                        return images.GDOWN
+                    case 'LEFT':
+                        return images.GLEFT
+                    case 'RIGHT':
+                        return images.GRIGHT
+                }
+            })
+
+            for(let i = 0; i < numObjs; i++){
+                const dir = goalsArray[Math.floor(Math.random() * 4)]
+                const posX = (Math.random() * (WIDTH - 2*RAD + SCALE)) + RAD - SCALE
+                const posY = (Math.random() * (HEIGHT - 2*RAD + SCALE)) + RAD - SCALE
                 let fig
                 switch (dir) {
                     case 'UP':
@@ -194,19 +238,19 @@
             ctx.strokeStyle = "#55FF55"
             ctx.fillStyle = "#006600"
             ctx.beginPath()
-            ctx.arc(0,0, 2.5*SCALE, 0, 2*Math.PI)
+            ctx.arc(0,0, RAD*(1-FAIL_RATIO), 0, 2*Math.PI)
             ctx.stroke()
             ctx.fill()
             ctx.beginPath()
-            ctx.arc(WIDTH,0, 2.5*SCALE, 0, 2*Math.PI)
+            ctx.arc(WIDTH,0, RAD*(1-FAIL_RATIO), 0, 2*Math.PI)
             ctx.stroke()
             ctx.fill()
             ctx.beginPath()
-            ctx.arc(WIDTH,HEIGHT, 2.5*SCALE, 0, 2*Math.PI)
+            ctx.arc(WIDTH,HEIGHT, RAD*(1-FAIL_RATIO), 0, 2*Math.PI)
             ctx.stroke()
             ctx.fill()
             ctx.beginPath()
-            ctx.arc(0,HEIGHT, 2.5*SCALE, 0, 2*Math.PI)
+            ctx.arc(0,HEIGHT, RAD*(1-FAIL_RATIO), 0, 2*Math.PI)
             ctx.stroke()
             ctx.fill()
 
@@ -229,7 +273,7 @@
             requestAnimationFrame(update)
         }
 
-        init()
+        init(15)
 
     </script>
 </body>
